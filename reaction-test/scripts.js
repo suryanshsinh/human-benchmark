@@ -2,10 +2,10 @@ let testCounter = 0
 let gameContainer = document.querySelector('main')
 let currentScreen = 'start'
 let scores = []
+let mainTimeout;
 
-gameContainer.addEventListener('click', e => {
-    let mainTimeout = setTimeout(() => {}, 0)
-    if (testCounter >= 3) {
+gameContainer.addEventListener('mousedown', e => {
+    if (testCounter >= 5) {
         endScreen(avg(scores))
     } else {
         if (currentScreen === 'red') {
@@ -14,16 +14,15 @@ gameContainer.addEventListener('click', e => {
         } else if (currentScreen === 'start' || currentScreen === 'blue' || currentScreen === 'tooSoon') {
             clearTimeout(mainTimeout)
             redScreen()
-            clearTimeout(mainTimeout)
             mainTimeout = setTimeout(() => {
                 greenScreen()
-                start = Date.now();
+                start = performance.now()
             }, (Math.random() * 3000) + 2000)
         } else if (currentScreen === 'green') {
-            end = Date.now()
+            end = performance.now()
             testCounter++
-            blueScreen(end-start)
-            scores.push(end-start)
+            blueScreen(Math.round(end-start))
+            scores.push(Math.round(end-start))
         }
     }
 })
@@ -81,5 +80,5 @@ const avg = array => {
     for (let element of array) {
         sum += element
     }
-    return sum / array.length
+    return Math.round(sum / array.length)
 }
