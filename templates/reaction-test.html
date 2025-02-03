@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="/tailwindcss.js"></script>
+    <script src="{{ url_for('static', filename='tailwindcss.js') }}"></script>
 </head>
 <body class="bg-gray-800 text-white">
     <nav class="flex justify-between items-center p-4 xl:mx-36">
@@ -26,6 +26,6 @@
             <p class="text-xl max-sm:text-lg">When the red box turns green, click as quickly as you can. Click anywhere to start.</p>
         </div>
     </main>
-    <script src="./scripts.js"></script>
+    <script src="{{ url_for('static', filename='reaction-test.js') }}"></script>
 </body>
 </html>

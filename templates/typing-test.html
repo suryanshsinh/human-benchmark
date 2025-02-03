@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typing Test</title>
-    <link rel="stylesheet" href="./styles.css">
-    <script src="/tailwindcss.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='typing-test.css') }}">
+    <script src="{{ url_for('static', filename='tailwindcss.js') }}"></script>
 </head>
 <body class="bg-gray-800 text-white">
     <nav class="flex justify-between items-center p-4 xl:mx-36">
@@ -34,6 +34,6 @@
             </div>
         </section>
     </main>
-    <script type="module" src="./scripts.js"></script>
+    <script type="module" src="{{ url_for('static', filename='typing-test.js') }}"></script>
 </body>
 </html>
