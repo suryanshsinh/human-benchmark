@@ -1,0 +1,4 @@
+*/*.config.js
+*.db
+*.sqlite3
+/__pycache__
