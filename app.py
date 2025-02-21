@@ -1,65 +1,95 @@
-from flask import *
-import time, db, asyncio
+from flask import Flask, render_template, request, redirect, g
+from tests import tests_bp
+from auth import auth_bp
+from db import Database
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+app.register_blueprint(tests_bp)
+app.register_blueprint(auth_bp)
+
+@app.before_request
+def load_current_user():
+    token = request.cookies.get('session')
+    if token:
+        db_ = Database()
+        user = db_.get_user_by_token(token)
+        g.current_user = user
+    else:
+        g.current_user = None
+
+@app.context_processor
+def inject_user():
+    return {'current_user': g.get('current_user', None)}
+
 @app.route('/')
-@app.route('/home')
 def home():
     return render_template('home.html')
 
-@app.route('/click-speed-test')
-def click_speed_test():
-    return render_template('click-speed-test.html')
+@app.route('/dashboard')
+def dashboard():
+    if not g.get('current_user'):
+        return redirect('/login')
+    return render_template('dashboard.html')
 
-@app.route('/memory-test')
-def memory_test():
-    return render_template('memory-test.html')
+from flask import Flask, render_template, request, jsonify, g, redirect
+from tests import tests_bp
+from auth import auth_bp
+from db import Database
 
-@app.route('/reaction-test')
-def reaction_test():
-    return render_template('reaction-test.html')
+app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-@app.route('/typing-test')
-def typing_test():
-    return render_template('typing-test.html')
+app.register_blueprint(tests_bp)
+app.register_blueprint(auth_bp)
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
+@app.before_request
+def load_current_user():
+    token = request.cookies.get('session')
+    if token:
+        db_ = Database()
+        user = db_.get_user_by_token(token)
+        g.current_user = user
+    else:
+        g.current_user = None
 
-@app.route('/register')
-def register():
-    return render_template('register.html')
+@app.context_processor
+def inject_user():
+    return {'current_user': g.get('current_user', None)}
 
-@app.route('/login', methods=['POST'])
-async def login_post():
-    await asyncio.sleep(2)
-    try:
-        db_ = db.Database()
-        data = request.get_json()
-        username = data['username']
-        password = data['password']
-        res = db_.login(username, password)
-        db_.close()
-        print(res)
-        if res['success']:
-            return {
-                'success': True,
-                'message': res['message'],
-                'token': res['token']
-            }
-        return {
-            'success': False,
-            'message': res['message']
-        }, 400
-    except Exception as e:
-        print(e)
-        return {
-            'success': False,
-            'message': str(e)
-        }, 400
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/dashboard')
+def dashboard():
+    if not g.get('current_user'):
+        return redirect('/login')
+    return render_template('dashboard.html')
+
+@app.route('/save-test', methods=['POST'])
+def save_test():
+    if not g.get('current_user'):
+        return jsonify({'success': False, 'message': 'Unauthorized'}), 401
+    data = request.get_json()
+    test_id = data.get('test_id')
+    score = data.get('score')
+    if not test_id or score is None:
+        return jsonify({'success': False, 'message': 'Missing test_id or score'}), 400
+    db_ = Database()
+    result = db_.add_activity(g.current_user['id'], test_id, score)
+    if result.get('success'):
+        return jsonify({'success': True, 'message': 'Activity recorded'})
+    return jsonify(result), 400
+
+@app.route('/api/history')
+def api_history():
+    if not g.current_user:
+        return jsonify({'success': False, 'message': 'Unauthorized'}), 401
+    db_ = Database()
+    data = db_.get_user_activity(g.current_user['id'])
+    return jsonify({'success': True, 'history': data})
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

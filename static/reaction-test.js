@@ -1,11 +1,12 @@
 let testCounter = 0
+let totalTests = 5
 let gameContainer = document.querySelector('main')
 let currentScreen = 'start'
 let scores = []
 let mainTimeout;
 
 gameContainer.addEventListener('mousedown', e => {
-    if (testCounter >= 5) {
+    if (testCounter >= totalTests) {
         endScreen(avg(scores))
     } else {
         if (currentScreen === 'red') {
@@ -55,7 +56,7 @@ const blueScreen = (time) => {
     currentScreen = 'blue'
     removeBg(gameContainer)
     gameContainer.classList.add('bg-blue-500')
-    document.querySelector('main>div>p').innerHTML = ''
+    document.querySelector('main>div>p').innerHTML = 'Click to continue'
     document.querySelector('main>div>h1').innerHTML = `${time}ms`
 }
 
@@ -71,8 +72,19 @@ const endScreen = (score) => {
     currentScreen = 'end'
     removeBg(gameContainer)
     gameContainer.classList.add('bg-blue-500')
-    document.querySelector('main>div>p').innerHTML = ''
+    document.querySelector('main>div>p').innerHTML = `Your average reaction time is ${score}ms`
     document.querySelector('main>div>h1').innerHTML = `${score}ms`
+    if (!document.querySelector('main>div>div')) {
+        document.querySelector('main>div').innerHTML += `
+            <div class="flex gap-3">
+                <button class="py-2 px-5 rounded text-center text-lg font bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition-all hover:shadow-lg shadow-md ripple-button" onclick="saveTest('reaction', ${score})">Save score</button>
+                <button class="py-2 px-5 rounded text-center text-lg font bg-gray-100 text-black font-semibold hover:bg-gray-300 transition-all hover:shadow-lg shadow-md ripple-button" onclick="restartGame()">Try again</button>
+            </div>`
+    }
+}
+
+function restartGame() {
+    location.reload()
 }
 
 const avg = array => {

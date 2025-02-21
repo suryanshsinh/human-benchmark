@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Register - Human Benchmark</title>
+  <script src="{{ url_for('static', filename='tailwindcss.js') }}"></script>
+  <style>
+    .input-valid {
+      border-color: #22c55e !important;
+    }
+    .input-invalid {
+      border-color: #ef4444 !important;
+    }
+    #password-requirements {
+      display: none;
+      background: #1f2937;
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      max-width: 100%;
+      border: 1px solid #374151;
+      z-index: 10;
+      width: max-content;
+      min-width: 220px;
+      margin-top: 0.25rem;
+    }
+    #api-error {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white overflow-hidden">
+  <main class="flex flex-col items-center justify-center px-6 py-20 mx-auto gap-7">
+    <span class="text-3xl font-bold">Human Benchmark</span>
+    <div class="w-full rounded-lg shadow border sm:max-w-md xl:p-0 bg-gray-800 border-gray-700 relative">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
+          Create a new account
+        </h1>
+        <form class="space-y-4 md:space-y-6 register-form" action="#">
+          <div class="relative">
+            <label for="username" class="block mb-2 text-sm font-medium text-white">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="border rounded-lg focus:ring-[#2563eb] focus:border-[#2563eb] block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white outline-none transition-all"
+              placeholder="Your username"
+              required
+            />
+            <div id="username-error" class="text-xs text-red-500 mt-1 absolute"></div>
+          </div>
+          <div class="relative">
+            <label for="email" class="block mb-2 text-sm font-medium text-white">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="border rounded-lg focus:ring-[#2563eb] focus:border-[#2563eb] block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white outline-none transition-all"
+              placeholder="name@company.com"
+              required
+            />
+            <div id="email-error" class="text-xs text-red-500 mt-1 absolute"></div>
+          </div>
+          <div class="relative">
+            <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
+            <div class="relative">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="••••••••"
+                class="border pr-16 rounded-lg focus:ring-[#2563eb] focus:border-[#2563eb] block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white outline-none transition-all"
+                required
+              />
+              <div class="toggle-password absolute top-0 right-0 h-full aspect-square flex justify-center items-center">
+                <div class="h-[80%] aspect-square rounded-lg hover:bg-[#fff2] cursor-pointer transition-all flex justify-center items-center">
+                  <svg
+                    width="24"
+                    height="24"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M4.5 8C7.5 14.5 16.5 14.5 19.5 8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.8162 11.3175L19.5 15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 12.875V16.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.18383 11.3175L4.5 15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              id="password-requirements"
+            >
+              <ul class="list-disc px-6">
+                <li>8-16 characters long</li>
+                <li>One lowercase character</li>
+                <li>One uppercase character</li>
+                <li>One special character</li>
+                <li>One number</li>
+              </ul>
+            </div>
+            <div id="password-error" class="text-xs text-red-500 mt-1"></div>
+          </div>
+          <div id="api-error" class="text-[#ffdede] text-sm my-2 px-4 py-2 bg-[#7a383e] rounded-lg font-semibold"></div>
+          <button
+            type="submit"
+            class="register-button w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-2.5 flex justify-center items-center bg-[#2563eb] hover:bg-[#1d4ed8] focus:ring-[#1e40af]"
+          >
+            Register
+          </button>
+          <p class="text-sm font-light text-gray-400">
+            Already have an account?
+            <a href="/login" class="font-medium hover:underline text-[#3b82f6]">Sign in</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </main>
+  <script src='{{ url_for('static', filename='register.js') }}'></script>
+</body>
+</html>

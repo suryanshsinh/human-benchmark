@@ -5,14 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="{{ url_for('static', filename='tailwindcss.js') }}"></script>
+    <script src="{{ url_for('static', filename='save-test.js') }}"></script>
 </head>
-<body class="bg-gray-800 text-white">
-    <nav class="flex justify-between items-center p-4 xl:mx-36">
-        <h1 class="hidden sm:block text-3xl font-semibold">Human Benchmark</h1>
-        <h1 class="block sm:hidden text-3xl font-semibold">HB</h1>
-        <div class="flex gap-4 text-lg">
-            <div>Login</div>
-            <div>Sign-up</div>
+<body class="bg-gray-900 text-white">
+    <nav class="flex justify-between items-center px-4 xl:mx-36">
+        <a href='/' class="hidden sm:block text-3xl font-semibold h-full py-3 px-5 transition-all hover:bg-[#fff1]">Human Benchmark</h1>
+        <a href='/' class="block sm:hidden text-3xl font-semibold h-full py-3 px-5 transition-all hover:bg-[#fff1]">HB</h1>
+        <div class="flex text-lg">
+        {% if current_user %}
+            <a href="/dashboard" class="h-full py-3 px-5 transition-all hover:bg-[#fff1]">Dashboard</a>
+            <a href="/logout" class="h-full py-3 px-5 transition-all hover:bg-[#fff1]">Logout</a>
+        {% else %}
+            <a href="/login" class="h-full py-3 px-5 transition-all hover:bg-[#fff1]">Login</a>
+            <a href="/register" class="h-full py-3 px-5 transition-all hover:bg-[#fff1]">Sign-up</a>
+        {% endif %}
         </div>
     </nav>
     <main class="h-96 w-full bg-blue-400 flex justify-center items-center flex-col cursor-pointer select-none">

@@ -28,14 +28,14 @@ function nextLevel() {
     // number = Math.round(Math.random() * Math.pow(10, level))
     number = Math.floor(Math.random() * (Math.pow(10, level) - Math.pow(10, level - 1))) + Math.pow(10, level - 1)
     testScreen(number)
-    document.querySelector('.timer').style.animationDuration = (2000 + level*500 + 10) + 'ms'
+    document.querySelector('.timer').style.animationDuration = (2000 + level*500 + 20) + 'ms'
     mainTimeout = setTimeout(() => {
         answerScreen()
     }, 2000 + level*500)
 }
 
 function restartGame() {
-    level = 1
+    level = 0
     startScreen()
 }
 
@@ -77,10 +77,10 @@ function endScreen() {
     gameContainer.innerHTML = `
         <div class="flex flex-col justify-center items-center text-center max-w-lg gap-5 p-4">
             <h1 class="font-semibold text-6xl ">Game Over</h1>
-            <p class="text-xl">You reached level ${level}.</p>
+            <p class="text-xl">You completed ${level - 1} ${(level - 1 === 1) ? 'level' : 'levels'}.</p>
             <div class="flex gap-3">
-                <button class="py-2 px-5 rounded text-center text-lg font bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition-all hover:shadow-lg shadow-md" onclick="restartGame()">Save score</button>
-                <button class="py-2 px-5 rounded text-center text-lg font bg-gray-100 text-black font-semibold hover:bg-gray-300 transition-all hover:shadow-lg shadow-md" onclick="saveScore()">Try again</button>
+                <button class="py-2 px-5 rounded text-center text-lg font bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition-all hover:shadow-lg shadow-md" onclick="saveTest('memory', ${level - 1})">Save score</button>
+                <button class="py-2 px-5 rounded text-center text-lg font bg-gray-100 text-black font-semibold hover:bg-gray-300 transition-all hover:shadow-lg shadow-md" onclick="restartGame()">Try again</button>
             </div>
         </div>`
 }
